@@ -32,8 +32,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
 
         <FitlogProvider>
-          <Navbar/>
-           <main className="pt-20"></main>
+          <Navbar />
+          <main className="pt-20"></main>
           {children}
 
           <ToastContainer />

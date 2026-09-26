@@ -32,7 +32,7 @@ const ListedPage = () => {
   const activeData: WFitlog[] =
     activeTab === "plan" ? addPlan : addSave;
 
-  
+
   const sortedData = [...activeData].sort((a, b) => {
     if (sortBy === "duration") {
       return a.duration - b.duration;
@@ -102,13 +102,13 @@ const ListedPage = () => {
           </p>
         </div>
 
-       
+
         <div className="flex gap-3 mb-7">
           <button
             onClick={() => setActiveTab("plan")}
             className={`px-5 py-2 rounded-lg font-semibold transition ${activeTab === "plan"
-                ? "bg-lime-400 text-black"
-                : "bg-[#1a1d23] text-gray-400 hover:text-white"
+              ? "bg-lime-400 text-black"
+              : "bg-[#1a1d23] text-gray-400 hover:text-white"
               }`}
           >
             My Plan ({addPlan.length})
@@ -117,15 +117,15 @@ const ListedPage = () => {
           <button
             onClick={() => setActiveTab("saved")}
             className={`px-5 py-2 rounded-lg font-semibold transition ${activeTab === "saved"
-                ? "bg-lime-400 text-black"
-                : "bg-[#1a1d23] text-gray-400 hover:text-white"
+              ? "bg-lime-400 text-black"
+              : "bg-[#1a1d23] text-gray-400 hover:text-white"
               }`}
           >
             Saved ({addSave.length})
           </button>
         </div>
 
-       
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
 
           <div className="bg-[#171a20] border border-gray-800 rounded-xl p-5">
@@ -160,7 +160,7 @@ const ListedPage = () => {
 
         </div>
 
-       
+
         <div className="flex items-center justify-end gap-4 mb-6">
 
           <span className="text-gray-400 text-lg">
@@ -193,7 +193,7 @@ const ListedPage = () => {
               </option>
             </select>
 
-           
+
             <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -231,7 +231,7 @@ const ListedPage = () => {
 
         ) : (
 
-    
+
           <div className="flex flex-col gap-6">
 
             {sortedData.map((fitlog) => {
@@ -244,15 +244,15 @@ const ListedPage = () => {
                 <div
                   key={fitlog.id}
                   className={`bg-white rounded-2xl overflow-hidden border transition ${isDone
-                      ? "border-lime-400"
-                      : "border-gray-800"
+                    ? "border-lime-400"
+                    : "border-gray-800"
                     }`}
                 >
 
-                  
+
                   <div className="flex flex-col md:flex-row">
 
-                    
+
                     <div className="w-full md:w-2/5 h-64 md:h-auto">
                       <Image
                         src={fitlog.image}
@@ -263,17 +263,17 @@ const ListedPage = () => {
                       />
                     </div>
 
-                   
+
                     <div className="w-full md:w-3/5 p-6 flex flex-col">
 
-                      
+
                       <div className="flex items-start justify-between gap-4">
 
                         <div>
                           <h2
                             className={`text-2xl font-bold ${isDone
-                                ? "text-green-600"
-                                : "text-gray-900"
+                              ? "text-green-600"
+                              : "text-gray-900"
                               }`}
                           >
                             {fitlog.name}
@@ -299,12 +299,12 @@ const ListedPage = () => {
 
                       </div>
 
-                  
+
                       <p className="text-gray-600 text-sm leading-6 mt-4">
                         {fitlog.description}
                       </p>
 
-                   
+
                       <div className="grid grid-cols-2 gap-3 mt-5">
 
                         <div className="bg-gray-100 rounded-lg p-3">
@@ -349,7 +349,7 @@ const ListedPage = () => {
 
                       </div>
 
-             
+
                       <div className="mt-4">
                         <span className="text-yellow-500">
                           ★
@@ -360,7 +360,7 @@ const ListedPage = () => {
                         </span>
                       </div>
 
-                
+
                       <div className="flex gap-3 mt-auto pt-6">
 
                         <Link
@@ -379,8 +379,8 @@ const ListedPage = () => {
                           }
                           disabled={isDone}
                           className={`px-5 py-2.5 rounded-lg font-semibold transition ${isDone
-                              ? "bg-lime-400 text-black cursor-default"
-                              : "bg-blue-600 text-white hover:bg-blue-700"
+                            ? "bg-lime-400 text-black cursor-default"
+                            : "bg-blue-600 text-white hover:bg-blue-700"
                             }`}
                         >
                           {isDone
