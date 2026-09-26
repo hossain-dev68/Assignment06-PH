@@ -10,11 +10,19 @@ const Saved = ({ card }: { card: WFitlog }) => {
 
     console.log(FitlogContext);
 
-    const handleAddSaved = () => {
-        console.log("Plan ADD");
-        setaddSave([...addSave, card])
-        toast.success(`You Saved "${card.name}"`)
-    };
+   const handleAddSaved = () => {
+  const alreadySaved = addSave.some(
+    (item) => item.id === card.id
+  );
+
+  if (alreadySaved) {
+    toast.info(`"${card.name}" is already saved!`);
+    return;
+  }
+
+  setaddSave([...addSave, card]);
+  toast.success(`You Saved "${card.name}"`);
+};
     return (
         <button className="btn btn-outline btn-primary btn-sm flex-1" onClick={() => handleAddSaved()}>
             Save for Later

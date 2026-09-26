@@ -1,12 +1,25 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
+import { FitlogContext } from "@/context/FitlogContext";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
+  const { addPlan, addSave } = useContext(FitlogContext);
+
+  const isWorkoutActive =
+    pathname.startsWith("/workouts") ||
+    pathname.startsWith("/details");
+
+  const isPlanActive = pathname.startsWith("/listed-plan");
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-base-100 shadow-sm z-50">
       <div className="navbar container mx-auto">
 
-        {/* Left Side */}
+        {/* LEFT */}
         <div className="navbar-start">
 
           {/* Mobile Menu */}
@@ -24,11 +37,29 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
             >
               <li>
-                <Link href="">Workouts</Link>
+                <Link
+                  href="/workouts"
+                  className={`transition-colors duration-200 ${
+                    isWorkoutActive
+                      ? "text-lime-400"
+                      : "text-gray-200"
+                  }`}
+                >
+                  Workouts
+                </Link>
               </li>
 
               <li>
-                <Link href="">My Plan</Link>
+                <Link
+                  href="/listed-plan"
+                  className={`transition-colors duration-200 ${
+                    isPlanActive
+                      ? "text-lime-400"
+                      : "text-gray-200"
+                  }`}
+                >
+                  My Plan
+                </Link>
               </li>
             </ul>
           </div>
@@ -37,32 +68,71 @@ const Navbar = () => {
           <div className="font-semibold text-lg">
             FITLOG
           </div>
-
         </div>
 
-        {/* Desktop Menu */}
+        {/* CENTER - Desktop */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
+
             <li>
-              <Link href="">Workouts</Link>
+              <Link
+                href="/workouts"
+                className={`transition-colors duration-200 ${
+                  isWorkoutActive
+                    ? "text-lime-400"
+                    : "text-gray-200"
+                }`}
+              >
+                Workouts
+              </Link>
             </li>
 
             <li>
-              <Link href="/listed-plan">My Plan</Link>
+              <Link
+                href="/listed-plan"
+                className={`transition-colors duration-200 ${
+                  isPlanActive
+                    ? "text-lime-400"
+                    : "text-gray-200"
+                }`}
+              >
+                My Plan
+              </Link>
             </li>
+
           </ul>
         </div>
 
-        {/* Right Side */}
+        {/* RIGHT */}
         <div className="navbar-end gap-2">
 
-          <button className="btn hidden sm:inline-flex">
+          {/* Plan */}
+          <Link
+            href="/listed-plan"
+            className="btn hidden sm:inline-flex relative"
+          >
             Plan
-          </button>
 
-          <button className="btn hidden sm:inline-flex">
+            {addPlan.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#ccff00] text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                {addPlan.length}
+              </span>
+            )}
+          </Link>
+
+          {/* Saved */}
+          <Link
+            href="/listed-plan"
+            className="btn hidden sm:inline-flex relative"
+          >
             Saved
-          </button>
+
+            {addSave.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#ccff00] text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                {addSave.length}
+              </span>
+            )}
+          </Link>
 
         </div>
 

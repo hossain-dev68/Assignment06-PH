@@ -14,7 +14,7 @@ const Fitlog = async () => {
   return (
     <section className="container mx-auto my-[70px] px-4">
 
-      {/* Section Header */}
+     
       <div className="text-center mb-10">
        
 
@@ -27,7 +27,7 @@ const Fitlog = async () => {
         </p>
       </div>
 
-      {/* Cards */}
+  
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         {fitlogData.map((fitlog,id) => (
           <FitlogCard

@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import AddPlan from '@/app/components/Fitlogdetails/AddPlan';
 import Saved from '@/app/components/Fitlogdetails/Saved';
+import { WFitlog } from '@/types/fitlog.type';
 
 interface IdPageProps {
     params:Promise<{
@@ -16,11 +17,11 @@ const getFitlog = async () => {
 const DetailsIdPage = async({params}:IdPageProps) => {
     const {id} = await params;
     const cardData = await getFitlog();
-    const card = cardData.find((card:WFitlog ) => String(card.id) === String(id)) as IFitlog ;
+    const card = cardData.find((card:WFitlog ) => String(card.id) === String(id)) as WFitlog ;
     return (
   <div className='container mx-auto'>
      <div className="card lg:card-side bg-base-100 shadow-xl overflow-hidden border border-gray-100">
-  {/* Image */}
+  
   <figure className="lg:w-2/5 bg-gray-100">
     <Image
       src={card.image}
@@ -31,13 +32,13 @@ const DetailsIdPage = async({params}:IdPageProps) => {
     />
   </figure>
 
-  {/* Details */}
+
   <div className="card-body lg:w-3/5 p-5">
 
-    {/* Title & Rating */}
+   
     <div>
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-white">
           {card.name}
         </h2>
 
@@ -51,7 +52,7 @@ const DetailsIdPage = async({params}:IdPageProps) => {
       </p>
     </div>
 
-    {/* Workout Info */}
+  
     <div className="grid grid-cols-2 gap-2 mt-3">
 
       <div className="bg-blue-50 rounded-lg p-3">
@@ -84,7 +85,7 @@ const DetailsIdPage = async({params}:IdPageProps) => {
 
     </div>
 
-    {/* Muscle Groups */}
+
     <div className="mt-3 " >
       <h3 className="font-bold text-base text-[#FFFFFF] mb-1">
         Target Muscle Groups
@@ -102,7 +103,7 @@ const DetailsIdPage = async({params}:IdPageProps) => {
       </div>
     </div>
 
-    {/* Sets & Reps */}
+
     <div className="flex gap-3 mt-3">
 
       <div className="flex-1 border border-gray-200 rounded-lg p-3">
@@ -121,7 +122,7 @@ const DetailsIdPage = async({params}:IdPageProps) => {
 
     </div>
 
-    {/* Instructions */}
+    
     <div className="mt-3">
       <h3 className="text-lg font-bold text-[#FFFFFF] mb-2">
         How to Perform
@@ -145,7 +146,7 @@ const DetailsIdPage = async({params}:IdPageProps) => {
       </div>
     </div>
 
-    {/* Button */}
+ 
    <div className="card-actions justify-end mt-3 gap-2">
    <AddPlan card={card}/>
 
