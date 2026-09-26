@@ -66,7 +66,7 @@ const ListedPage = () => {
     <main className="min-h-screen bg-[#0d0f13] pt-24 pb-10">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
+   
         <div className="mb-8">
           <div className="flex items-center gap-3">
             <span className="w-1 h-8 bg-lime-400 rounded-full"></span>
@@ -81,7 +81,7 @@ const ListedPage = () => {
           </p>
         </div>
 
-        {/* Tabs */}
+      
         <div className="flex gap-3 mb-7">
           <button
             onClick={() => setActiveTab("plan")}
@@ -106,7 +106,7 @@ const ListedPage = () => {
           </button>
         </div>
 
-        {/* Summary */}
+    
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
 
           <div className="bg-[#171a20] border border-gray-800 rounded-xl p-5">
@@ -141,7 +141,7 @@ const ListedPage = () => {
 
         </div>
 
-        {/* Workout List */}
+        
         {activeData.length === 0 ? (
 
           <div className="text-center py-20">
@@ -159,7 +159,7 @@ const ListedPage = () => {
 
         ) : (
 
-          /* One column */
+          
           <div className="flex flex-col gap-6">
 
             {activeData.map((fitlog) => {
@@ -176,10 +176,10 @@ const ListedPage = () => {
                   }`}
                 >
 
-                  {/* Card */}
+                 
                   <div className="flex flex-col md:flex-row">
 
-                    {/* Image - Left */}
+                   
                     <div className="w-full md:w-2/5 h-64 md:h-auto">
                       <Image
                         src={fitlog.image}
@@ -190,10 +190,10 @@ const ListedPage = () => {
                       />
                     </div>
 
-                    {/* Information - Right */}
+                    
                     <div className="w-full md:w-3/5 p-6 flex flex-col">
 
-                      {/* Title + Remove */}
+                    
                       <div className="flex items-start justify-between gap-4">
 
                         <div>
@@ -213,7 +213,7 @@ const ListedPage = () => {
                           </p>
                         </div>
 
-                        {/* Remove */}
+                   
                         <button
                           onClick={() =>
                             handleRemove(
@@ -228,12 +228,10 @@ const ListedPage = () => {
 
                       </div>
 
-                      {/* Description */}
                       <p className="text-gray-600 text-sm leading-6 mt-4">
                         {fitlog.description}
                       </p>
 
-                      {/* Workout Information */}
                       <div className="grid grid-cols-2 gap-3 mt-5">
 
                         <div className="bg-gray-100 rounded-lg p-3">
@@ -278,7 +276,7 @@ const ListedPage = () => {
 
                       </div>
 
-                      {/* Buttons */}
+                 
                       <div className="flex gap-3 mt-auto pt-6">
 
                         <Link
@@ -321,7 +319,7 @@ const ListedPage = () => {
 
       </section>
 
-      {/* Toast */}
+      
       {toast && (
         <div className="fixed bottom-6 right-6 bg-white text-black px-5 py-3 rounded-lg shadow-lg font-semibold z-50">
           {toast}

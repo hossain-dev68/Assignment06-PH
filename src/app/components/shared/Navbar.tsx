@@ -19,10 +19,10 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 w-full bg-base-100 shadow-sm z-50">
       <div className="navbar container mx-auto">
 
-        {/* LEFT */}
+      
         <div className="navbar-start">
 
-          {/* Mobile Menu */}
+         
           <div className="dropdown">
             <div
               tabIndex={0}
@@ -64,13 +64,13 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Logo */}
+         
           <div className="font-semibold text-lg">
             FITLOG
           </div>
         </div>
 
-        {/* CENTER - Desktop */}
+       
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
 
@@ -103,10 +103,10 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* RIGHT */}
+        
         <div className="navbar-end gap-2">
 
-          {/* Plan */}
+    
           <Link
             href="/listed-plan"
             className="btn hidden sm:inline-flex relative"
@@ -120,7 +120,7 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* Saved */}
+        
           <Link
             href="/listed-plan"
             className="btn hidden sm:inline-flex relative"

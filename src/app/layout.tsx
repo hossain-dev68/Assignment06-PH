@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/shared/Navbar";
 import FitlogProvider from "@/context/FitlogContext";
 import { ToastContainer } from "react-toastify";
+import Footer from "./components/shared/Footer";
 
 
 const geistSans = Geist({
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
 
           <ToastContainer />
-
+          <Footer></Footer>
         </FitlogProvider>
 
       </body>
