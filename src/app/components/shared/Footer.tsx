@@ -6,7 +6,7 @@ const Footer = () => {
         <footer className="container mx-auto">
             <div className=" px-6 py-5 flex flex-col sm:flex-row text-center justify-between gap-3">
 
-
+                  
                 <h2 className="text-white text-[20px] font-bold">
                     FITLOG
                 </h2>

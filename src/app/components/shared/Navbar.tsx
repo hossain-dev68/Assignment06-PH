@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import { FitlogContext } from "@/context/FitlogContext";
 import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import Logo from '@/asset/logo.png'
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -66,7 +68,10 @@ const Navbar = () => {
 
          
           <div className="font-semibold text-lg">
-            FITLOG
+            <Image
+                  src = {Logo}
+                  alt ="logo"
+                  ></Image>
           </div>
         </div>
 
