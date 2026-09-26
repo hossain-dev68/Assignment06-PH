@@ -3,28 +3,48 @@ import Image from 'next/image';
 import AddPlan from '@/app/components/Fitlogdetails/AddPlan';
 import Saved from '@/app/components/Fitlogdetails/Saved';
 import { WFitlog } from '@/types/fitlog.type';
+import fs from "fs/promises";
+import path from "path";
 
 interface IdPageProps {
   params: Promise<{
     id: string;
   }>
 }
-const getFitlog = async () => {
-   try{
-     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/fitlogworker.json`);
-  const data = await res.json();
-  return data;
-  }
-  catch(error) {
-    console.error("Error fetching data:",error);
-    return[];
+const getFitlog = async (): Promise<WFitlog[]> => {
+    try {
+        const filePath = path.join(
+            process.cwd(),
+            "public",
+            "fitlogworker.json"
+        );
 
-  }
+        const file = await fs.readFile(filePath, "utf-8");
+
+        const data: WFitlog[] = JSON.parse(file);
+
+        return data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return [];
+    }
 };
 const DetailsIdPage = async ({ params }: IdPageProps) => {
   const { id } = await params;
   const cardData = await getFitlog();
-  const card = cardData.find((card: WFitlog) => String(card.id) === String(id)) as WFitlog;
+ const card = cardData.find(
+    (item) => String(item.id) === String(id)
+);
+
+if (!card) {
+    return (
+        <div className="min-h-screen bg-[#0d0f13] flex items-center justify-center">
+            <h1 className="text-2xl font-bold text-white">
+                Workout not found
+            </h1>
+        </div>
+    );
+}
   return (
     <div className='container mx-auto'>
       <div className="card lg:card-side bg-base-100 shadow-xl overflow-hidden border border-gray-100">
