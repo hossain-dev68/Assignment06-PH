@@ -1,253 +1,271 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import { FitlogContext } from "@/context/FitlogContext";
-import Image from "next/image";
 import Link from "next/link";
-import type { WFitlog } from "@/types";
+import { FitlogContext } from "@/context/FitlogContext";
+import { WFitlog } from "@/types/fitlog.type";
 
 const ListedPage = () => {
-  const { addPlan, addSave } = useContext(FitlogContext);
+  const context = useContext(FitlogContext);
 
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
+  const [completedIds, setCompletedIds] = useState<number[]>([]);
+  const [toast, setToast] = useState("");
 
+  if (!context) {
+    return null;
+  }
 
-  const activeData = activeTab === "plan" ? addPlan : addSave;
+  const {
+    addPlan,
+    addSave,
+    removeFromPlan,
+    removeFromSave,
+  } = context;
 
+  const activeData: WFitlog[] =
+    activeTab === "plan" ? addPlan : addSave;
 
-  const totalMinutes = activeData.reduce(
-    (total: number, item: WFitlog) => total + item.duration,
+  const showToast = (message: string) => {
+    setToast(message);
+
+    setTimeout(() => {
+      setToast("");
+    }, 2000);
+  };
+
+  const handleDone = (id: number, name: string) => {
+    if (!completedIds.includes(id)) {
+      setCompletedIds([...completedIds, id]);
+      showToast(`${name} marked as done`);
+    }
+  };
+
+  const handleRemove = (id: number, name: string) => {
+    if (activeTab === "plan") {
+      removeFromPlan(id);
+      showToast(`${name} removed from plan`);
+    } else {
+      removeFromSave(id);
+      showToast(`${name} removed from saved`);
+    }
+  };
+
+  const totalDuration = activeData.reduce(
+    (total, item) => total + item.duration,
     0
   );
 
-  
   const totalCalories = activeData.reduce(
-    (total: number, item: WFitlog) => total + item.caloriesBurned,
+    (total, item) => total + item.caloriesBurned,
     0
   );
 
   return (
-    <div className="min-h-screen bg-[#0d0f13] text-white pt-16">
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main className="min-h-screen bg-[#0d0f13] pt-24 pb-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
        
-        <div className="mb-5">
-          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
-            My Plan
-          </h1>
+        <div className="mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-1 h-8 bg-lime-400 rounded-full"></span>
 
-          <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Keep track of your workouts and complete your daily fitness goals.
+            <h1 className="text-3xl sm:text-4xl font-bold text-white">
+              MY WORKOUTS
+            </h1>
+          </div>
+
+          <p className="text-gray-400 text-sm mt-2 ml-4">
+            Manage your workout plan and saved workouts.
           </p>
         </div>
 
+       
+        <div className="flex gap-3 mb-7">
+          <button
+            onClick={() => setActiveTab("plan")}
+            className={`px-5 py-2 rounded-lg font-semibold transition ${
+              activeTab === "plan"
+                ? "bg-lime-400 text-black"
+                : "bg-[#1a1d23] text-gray-400 hover:text-white"
+            }`}
+          >
+            My Plan ({addPlan.length})
+          </button>
 
-        <div className="bg-[#12151b] border border-[#252a33] rounded-xl overflow-hidden mb-6">
+          <button
+            onClick={() => setActiveTab("saved")}
+            className={`px-5 py-2 rounded-lg font-semibold transition ${
+              activeTab === "saved"
+                ? "bg-lime-400 text-black"
+                : "bg-[#1a1d23] text-gray-400 hover:text-white"
+            }`}
+          >
+            Saved ({addSave.length})
+          </button>
+        </div>
 
-          <div className="grid grid-cols-3">
+       
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="bg-[#171a20] border border-gray-800 rounded-xl p-5">
+            <p className="text-gray-400 text-sm">Total Workouts</p>
+            <p className="text-2xl font-bold text-white mt-1">
+              {activeData.length}
+            </p>
+          </div>
 
-         
-            <div className="p-4 sm:p-5 border-r border-[#252a33]">
-              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">
-                Exercises
-              </p>
+          <div className="bg-[#171a20] border border-gray-800 rounded-xl p-5">
+            <p className="text-gray-400 text-sm">Total Duration</p>
+            <p className="text-2xl font-bold text-white mt-1">
+              {totalDuration} min
+            </p>
+          </div>
 
-              <p className="text-2xl sm:text-3xl font-black text-lime-400 mt-1">
-                {activeData.length}
-              </p>
-            </div>
-
-          
-            <div className="p-4 sm:p-5 border-r border-[#252a33]">
-              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">
-                Minutes
-              </p>
-
-              <p className="text-2xl sm:text-3xl font-black text-white mt-1">
-                {totalMinutes}
-              </p>
-            </div>
-
-            
-            <div className="p-4 sm:p-5">
-              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">
-                Calories
-              </p>
-
-              <p className="text-2xl sm:text-3xl font-black text-white mt-1">
-                {totalCalories}
-              </p>
-            </div>
-
+          <div className="bg-[#171a20] border border-gray-800 rounded-xl p-5">
+            <p className="text-gray-400 text-sm">Calories</p>
+            <p className="text-2xl font-bold text-white mt-1">
+              {totalCalories} kcal
+            </p>
           </div>
         </div>
 
+       
+        {activeData.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-gray-400 text-lg">
+              No workouts found.
+            </p>
 
-        
-        <div className="flex items-center justify-between gap-3 mb-4">
-
-      
-          <div className="flex bg-[#171a21] border border-[#272c35] rounded-lg p-1">
-
-            <button
-              onClick={() => setActiveTab("plan")}
-              className={`px-3 sm:px-4 py-1.5 rounded-md text-xs font-semibold transition ${
-                activeTab === "plan"
-                  ? "bg-[#252a33] text-white"
-                  : "text-gray-500 hover:text-white"
-              }`}
+            <Link
+              href="/workouts"
+              className="inline-block mt-4 bg-lime-400 text-black font-semibold px-5 py-2 rounded-lg hover:bg-lime-300"
             >
-              Today's Plan
-            </button>
-
-            <button
-              onClick={() => setActiveTab("saved")}
-              className={`px-3 sm:px-4 py-1.5 rounded-md text-xs font-semibold transition ${
-                activeTab === "saved"
-                  ? "bg-[#252a33] text-white"
-                  : "text-gray-500 hover:text-white"
-              }`}
-            >
-              Saved
-            </button>
-
+              Browse Workouts
+            </Link>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {activeData.map((fitlog) => {
+              const isDone = completedIds.includes(fitlog.id);
 
-
-          <div className="flex items-center gap-2">
-
-            <span className="hidden sm:block text-xs text-gray-500">
-              Sort By
-            </span>
-
-            <button className="border border-[#292f39] bg-[#15181e] rounded-lg px-3 py-2 text-xs text-white">
-              Duration
-            </button>
-
-          </div>
-
-        </div>
-
-
-     
-        <div className="space-y-3">
-
-          {activeData.length > 0 ? (
-
-            activeData.map((fitlog: WFitlog) => (
-
-              <div
-                key={fitlog.id}
-                className="bg-[#14171d] border border-[#272c35] rounded-xl p-3 sm:p-4 hover:border-[#3a414d] transition"
-              >
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-
+              return (
+                <div
+                  key={fitlog.id}
+                  className={`bg-[#171a20] border rounded-xl p-5 transition ${
+                    isDone
+                      ? "border-lime-400"
+                      : "border-gray-800"
+                  }`}
+                >
                
-                  <div className="relative w-full sm:w-[110px] h-40 sm:h-[70px] flex-shrink-0 rounded-lg overflow-hidden">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2
+                        className={`text-xl font-bold ${
+                          isDone
+                            ? "text-lime-400"
+                            : "text-white"
+                        }`}
+                      >
+                        {fitlog.name}
+                      </h2>
 
-                    <Image
-                      src={fitlog.image}
-                      alt={fitlog.name}
-                      fill
-                      className="object-cover"
-                    />
-
-                  </div>
-
-
-             
-                  <div className="flex-1 min-w-0">
-
-               
-                    <h2 className="text-sm sm:text-base font-black uppercase text-white truncate">
-                      {fitlog.name}
-                    </h2>
-
-                
-                    <p className="text-[11px] text-gray-500 mt-0.5">
-                      {fitlog.equipment}
-                    </p>
-
-
-                  
-                    <div className="flex flex-wrap items-center gap-3 mt-2">
-
-                      <span className="text-[11px] text-gray-300">
-                        ◯ {fitlog.duration} min
-                      </span>
-
-                      <span className="text-[11px] text-gray-300">
-                        🔥 {fitlog.caloriesBurned} kcal
-                      </span>
-
-                      <span className="text-[11px] text-lime-400">
-                        ⭐ {fitlog.rating}
-                      </span>
-
+                      <p className="text-gray-400 text-sm mt-1">
+                        {fitlog.difficulty} · {fitlog.duration} min
+                      </p>
                     </div>
 
+                   
+                    <button
+                      onClick={() =>
+                        handleRemove(fitlog.id, fitlog.name)
+                      }
+                      className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-600 text-gray-400 hover:text-red-400 hover:border-red-400 transition"
+                    >
+                      ✕
+                    </button>
                   </div>
 
+                 
+                  <p className="text-gray-400 text-sm mt-4 leading-6">
+                    {fitlog.description}
+                  </p>
 
-                  
-                  <div className="flex sm:flex-col md:flex-row gap-2 w-full sm:w-auto">
+                  <div className="grid grid-cols-2 gap-3 mt-5">
+                    <div className="bg-[#20242c] rounded-lg p-3">
+                      <p className="text-gray-500 text-xs">
+                        Sets
+                      </p>
+                      <p className="text-white font-semibold">
+                        {fitlog.sets}
+                      </p>
+                    </div>
 
+                    <div className="bg-[#20242c] rounded-lg p-3">
+                      <p className="text-gray-500 text-xs">
+                        Reps
+                      </p>
+                      <p className="text-white font-semibold">
+                        {fitlog.reps}
+                      </p>
+                    </div>
+
+                    <div className="bg-[#20242c] rounded-lg p-3">
+                      <p className="text-gray-500 text-xs">
+                        Calories
+                      </p>
+                      <p className="text-white font-semibold">
+                        {fitlog.caloriesBurned} kcal
+                      </p>
+                    </div>
+
+                    <div className="bg-[#20242c] rounded-lg p-3">
+                      <p className="text-gray-500 text-xs">
+                        Equipment
+                      </p>
+                      <p className="text-white font-semibold">
+                        {fitlog.equipment}
+                      </p>
+                    </div>
+                  </div>
+
+                 
+                  <div className="flex gap-3 mt-5">
                     <Link
                       href={`/details/${fitlog.id}`}
-                      className="flex-1 sm:flex-none"
+                      className="flex-1 text-center border border-gray-600 text-white py-2.5 rounded-lg hover:bg-gray-800 transition"
                     >
-                      <button
-                        type="button"
-                        className="w-full border border-[#3a414d] hover:bg-[#20242c] text-white text-xs font-semibold px-4 py-2 rounded-full transition"
-                      >
-                        View Details
-                      </button>
+                      View Details
                     </Link>
 
                     <button
-                      type="button"
-                      className="flex-1 sm:flex-none bg-lime-400 hover:bg-lime-300 text-black text-xs font-bold px-4 py-2 rounded-full transition"
+                      onClick={() =>
+                        handleDone(fitlog.id, fitlog.name)
+                      }
+                      disabled={isDone}
+                      className={`px-4 py-2.5 rounded-lg font-semibold transition ${
+                        isDone
+                          ? "bg-lime-400 text-black cursor-default"
+                          : "bg-blue-600 text-white hover:bg-blue-700"
+                      }`}
                     >
-                      Mark as Done
+                      {isDone ? "✓ Done" : "✓ Mark as Done"}
                     </button>
-
                   </div>
-
                 </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
-              </div>
-
-            ))
-
-          ) : (
-
-          
-            <div className="bg-[#14171d] border border-[#272c35] rounded-xl py-16 text-center">
-
-              <div className="text-4xl mb-3">
-                💪
-              </div>
-
-              <h3 className="text-lg font-bold text-white">
-                {activeTab === "plan"
-                  ? "No workout added yet"
-                  : "No saved workout"}
-              </h3>
-
-              <p className="text-xs text-gray-500 mt-2">
-                Add some workouts to see them here.
-              </p>
-
-            </div>
-
-          )}
-
+    
+      {toast && (
+        <div className="fixed bottom-6 right-6 bg-white text-black px-5 py-3 rounded-lg shadow-lg font-semibold z-50">
+          {toast}
         </div>
-
-      </div>
-    </div>
+      )}
+    </main>
   );
 };
 

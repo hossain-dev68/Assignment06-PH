@@ -1,29 +1,43 @@
 "use client";
 
-import React, { createContext, ReactNode, useState } from 'react';
+import React, { createContext, ReactNode, useState } from "react";
+import { WFitlog } from "@/types/fitlog.type";
 
-export const FitlogContext = createContext({});
+export const FitlogContext = createContext({
+  addPlan: [] as WFitlog[],
+  setaddPlan: (_value: WFitlog[]) => {},
+  addSave: [] as WFitlog[],
+  setaddSave: (_value: WFitlog[]) => {},
+  removeFromPlan: (_id: number) => {},
+  removeFromSave: (_id: number) => {},
+});
 
 const FitlogProvider = ({ children }: { children: ReactNode }) => {
+  const [addPlan, setaddPlan] = useState<WFitlog[]>([]);
+  const [addSave, setaddSave] = useState<WFitlog[]>([]);
 
-    const [addPlan, setaddPlan] = useState([]);
+  const removeFromPlan = (id: number) => {
+    setaddPlan(addPlan.filter((item) => item.id !== id));
+  };
 
-    const [addSave, setaddSave] = useState([]);
+  const removeFromSave = (id: number) => {
+    setaddSave(addSave.filter((item) => item.id !== id));
+  };
 
-    const sharedData = {
-
+  return (
+    <FitlogContext.Provider
+      value={{
         addPlan,
-
         setaddPlan,
-
         addSave,
-
         setaddSave,
-
-    }
-
-    return <FitlogContext.Provider value={sharedData}>{children}</FitlogContext.Provider>
-
+        removeFromPlan,
+        removeFromSave,
+      }}
+    >
+      {children}
+    </FitlogContext.Provider>
+  );
 };
 
 export default FitlogProvider;
